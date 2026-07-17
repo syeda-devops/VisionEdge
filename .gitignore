@@ -1,0 +1,52 @@
+# Python 
+
+ __pycache__/  
+
+*.py[cod] 
+
+ *.pyo 
+
+ *.pyd 
+
+ # Virtual Environment 
+
+ .venv/  
+
+venv/  
+
+env/ 
+
+ # IDE  
+
+.vscode/ 
+
+ .idea/ 
+
+ # OS . 
+
+DS_Store Thumbs.db  
+
+# Logs  
+
+*.log 
+
+ # Python cache 
+
+ .pytest_cache/  
+
+# Build 
+
+ build/ dist/  
+
+# Models (generated) 
+
+ backend/models/*.engine  
+
+
+# React  
+
+frontend/node_modules/ 
+
+ # Environment  
+
+.env 
