@@ -17,4 +17,4 @@ def detect_objects(image_path):
 
 
 if __name__ == "__main__":
-    detect_objects("backend/core/detector/test.jpeg")
+    detect_objects("backend/data/sample.jpg")
