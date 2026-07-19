@@ -2,20 +2,28 @@ from backend.core.timer import Timer
 from backend.core.logger import logger
 
 
-
 class Benchmark:
     def __init__(self):
         self.timer = Timer()
-    def run(self, func, *args, **kwargs):
+
+    def measure(self, func, *args, **kwargs):
         self.timer.start()
 
         result = func(*args, **kwargs)
 
         elapsed = self.timer.stop()
 
-        fps = 1 / elapsed if elapsed > 0 else 0
+        return result, elapsed
 
-        logger.info(f"Execution Time: {elapsed:.6f} seconds")
-        logger.info(f"FPS: {fps:.2f}")
+    def calculate_fps(self, elapsed):
+        if elapsed <= 0:
+            return 0
 
-        return result, elapsed, fps
+        return 1 / elapsed
+
+    def report(self, elapsed):
+        fps = self.calculate_fps(elapsed)
+
+        logger.info(
+            f"Elapsed: {elapsed:.4f}s | FPS: {fps:.2f}"
+        )
