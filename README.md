@@ -25,3 +25,12 @@ docs/
 - ONNX
 - TensorRT
 - Basic WebRTC Streaming
+
+## Development Workflow
+
+1. Create a feature branch from develop.
+2. Commit small logical changes.
+3. Push your branch.
+4. Open a Pull Request.
+5. Wait for review.
+6. Merge into develop.
