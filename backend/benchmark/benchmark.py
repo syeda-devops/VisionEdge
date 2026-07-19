@@ -19,18 +19,3 @@ class Benchmark:
         logger.info(f"FPS: {fps:.2f}")
 
         return result, elapsed, fps
-def sample_function():
-    total = 0
-    for i in range(1000000):
-        total += i
-    return total
-
-
-if __name__ == "__main__":
-    benchmark = Benchmark()
-
-    result, elapsed, fps = benchmark.run(sample_function)
-
-    print(f"Result: {result}")
-    print(f"Elapsed: {elapsed:.6f} seconds")
-    print(f"FPS: {fps:.2f}")
