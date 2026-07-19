@@ -16,7 +16,13 @@ class ModelExporter:
         """
         self.model.export(
             format="onnx",
-            opset=12
+            opset=12,
+            imgsz=640,
+            simplify=True,
+            dynamic=False,
+            nms=True
+
+
         )
 
         print("ONNX Export Successful!")
