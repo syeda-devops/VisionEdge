@@ -1,7 +1,7 @@
 from backend.core.config import MODEL_PATH, IMAGE_PATH
 from backend.detector.detector import Detector
 from backend.streaming.frame_provider import FrameProvider
-
+from backend.benchmark.benchmark import Benchmark
 
 def main():
 
