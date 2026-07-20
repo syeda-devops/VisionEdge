@@ -2,8 +2,9 @@ import cv2
 import numpy as np
 import onnxruntime as ort
 
-from benchmark.benchmark import Benchmark
-from core.logger import logger
+from backend.benchmark import Benchmark 
+from backend.core.logger import logger 
+
 
 class ONNXValidator:
     """
