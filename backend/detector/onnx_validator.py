@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import onnxruntime as ort
 
-from backend.benchmark import Benchmark 
+from backend.benchmark.benchmark import Benchmark 
 from backend.core.logger import logger 
 
 
