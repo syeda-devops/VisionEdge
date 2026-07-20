@@ -58,8 +58,7 @@ class ONNXValidator:
 
             x1, y1, x2, y2, confidence, class_id = prediction
 
-            if confidence < 0.25:
-                continue
+           
 
             detections.append(
                 {
