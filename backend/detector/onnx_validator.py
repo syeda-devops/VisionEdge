@@ -175,6 +175,10 @@ class ONNXValidator:
                 detector.predict,
                 frame
             )
+        
+        pytorch_results = self._filter_detections(
+            pytorch_results
+        )
 
         image = self._prepare_input(frame)
 
@@ -191,6 +195,11 @@ class ONNXValidator:
             self._extract_detections(
                 outputs
             )
+        
+
+        onnx_results = self._filter_detections(
+            onnx_results
+        )
 
         passed = self.compare_outputs(
             pytorch_results,
