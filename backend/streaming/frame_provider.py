@@ -3,11 +3,13 @@ import cv2
 
 
 class FrameProvider:
-    """
-    Loads image frames for the detection pipeline.
-    """
 
-    SUPPORTED_EXTENSIONS = (".jpg", ".jpeg", ".png", ".bmp")
+    SUPPORTED_EXTENSIONS = (
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".bmp",
+    )
 
     def __init__(self, image_path: str):
 
@@ -26,7 +28,7 @@ class FrameProvider:
 
         if extension.lower() not in self.SUPPORTED_EXTENSIONS:
             raise ValueError(
-                f"Unsupported image format: {extension}"
+                f"Unsupported format: {extension}"
             )
 
     def get_frame(self):
@@ -39,7 +41,21 @@ class FrameProvider:
 
         if frame is None:
             raise RuntimeError(
-                "OpenCV failed to decode image."
+                "Failed to decode image."
             )
 
         return frame
+
+    def get_frame_info(self):
+
+        frame = self.get_frame()
+
+        height, width = frame.shape[:2]
+
+        channels = frame.shape[2]
+
+        return {
+            "width": width,
+            "height": height,
+            "channels": channels
+        }
