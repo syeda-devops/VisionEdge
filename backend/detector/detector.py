@@ -32,7 +32,13 @@ class Detector:
         list
         """
 
-        results = self.model(frame)
+        results = self.model(
+    frame,
+    imgsz=640,
+    conf=0.25,
+    iou=0.7,
+    verbose=False
+)
 
         detections = []
 
