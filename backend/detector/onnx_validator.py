@@ -74,6 +74,23 @@ class ONNXValidator:
             )
 
         return detections
+    
+    def _filter_detections(
+        self,
+        detections,
+        threshold=0.5
+    ):
+        """
+        Remove detections below the confidence threshold.
+        """
+
+        filtered = []
+
+        for detection in detections:
+            if detection["confidence"] >= threshold:
+                filtered.append(detection)
+
+        return filtered
 
     def compare_outputs(
         self,
