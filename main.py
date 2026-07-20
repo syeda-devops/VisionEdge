@@ -9,9 +9,14 @@ def main():
 
     detector = Detector(MODEL_PATH)
 
+    benchmark = Benchmark()
+
     frame = provider.get_frame()
 
-    detections = detector.predict(frame)
+    detections, elapsed = benchmark.measure(
+        detector.predict,
+        frame
+    )
 
 
     print(detections)
