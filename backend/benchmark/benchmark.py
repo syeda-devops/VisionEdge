@@ -1,5 +1,5 @@
-from backend.core.timer import Timer
-from backend.core.logger import logger
+from core.timer import Timer
+from core.logger import logger
 
 
 class Benchmark:
