@@ -19,9 +19,11 @@ def main():
     )
 
     benchmark.report()
-    
 
-    print(detections)
+    print("\nDetection Results")
+
+    for detection in detections:
+        print(detection)
 
 
 if __name__ == "__main__":
