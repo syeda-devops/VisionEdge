@@ -5,16 +5,22 @@ from backend.core.logger import logger
 class Benchmark:
     def __init__(self):
         self.timer = Timer()
-        self.results = []
+        self.results = {
+    "PyTorch": [],
+    "TensorRT": []
+}
 
-    def measure(self, func, *args, **kwargs):
+    def measure(self, backend, func, *args, **kwargs):
         self.timer.start()
 
         result = func(*args, **kwargs)
 
         elapsed = self.timer.stop()
 
-        self.results.append(elapsed)
+        if backend not in self.results:
+            raise ValueError(f"Unknown backend: {backend}")
+
+        self.results[backend].append(elapsed)
 
         return result, elapsed
 
@@ -24,16 +30,18 @@ class Benchmark:
 
         return 1 / elapsed
 
-    def statistics(self):
+    def statistics(self, backend):
         """
         Return benchmark statistics.
         """
-        if not self.results:
+        data = self.results.get(backend)
+
+        if not data:
             return None
 
-        average = sum(self.results) / len(self.results)
-        minimum = min(self.results)
-        maximum = max(self.results)
+        average = sum(data) / len(data)
+        minimum = min(data)
+        maximum = max(data)
         fps = self.calculate_fps(average)
 
         return {
@@ -43,8 +51,8 @@ class Benchmark:
             "fps": fps,
         }
 
-    def report(self):
-        stats = self.statistics()
+    def report(self, backend):
+        stats = self.statistics(backend)
 
         if stats is None:
             return
@@ -59,3 +67,8 @@ class Benchmark:
             stats["maximum"],
             stats["fps"],
         )
+    def compare(self):
+        return {
+        "PyTorch": self.statistics("PyTorch"),
+        "TensorRT": self.statistics("TensorRT"),
+    }
