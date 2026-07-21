@@ -14,11 +14,12 @@ def main():
     frame = provider.get_frame()
 
     detections, elapsed = benchmark.measure(
+        "PyTorch",
         detector.predict,
         frame
     )
 
-    benchmark.report()
+    benchmark.report("PyTorch")
 
     print("\nDetection Results")
 
