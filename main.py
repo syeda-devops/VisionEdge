@@ -14,10 +14,10 @@ def main():
     frame = provider.get_frame()
 
     detections, elapsed = benchmark.measure(
-        "PyTorch",
-        detector.predict,
-        frame
-    )
+    "PyTorch",
+    detector.predict,
+    frame
+)
 
     benchmark.report("PyTorch")
 
