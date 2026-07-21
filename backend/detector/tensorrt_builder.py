@@ -1,4 +1,7 @@
-import tensorrt as trt
+try:
+    import tensorrt as trt
+except ModuleNotFoundError:
+    trt = None
 
 
 class TensorRTBuilder:
@@ -8,6 +11,14 @@ class TensorRTBuilder:
     """
 
     def __init__(self):
+
+        if trt is None:
+
+            raise RuntimeError(
+                "TensorRT is not installed. "
+                "Use an NVIDIA CUDA-enabled machine."
+            )
+
 
         self.logger = trt.Logger(
             trt.Logger.INFO
