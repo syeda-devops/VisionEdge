@@ -18,6 +18,8 @@ def main():
         frame
     )
 
+    benchmark.report()
+    
 
     print(detections)
 
