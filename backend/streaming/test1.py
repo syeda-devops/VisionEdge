@@ -1,9 +1,18 @@
-from backend.streaming.frame_provider import FrameProvider
-from backend.core.config import IMAGE_PATH
+from frame_provider import FrameProvider
 
-provider = FrameProvider(IMAGE_PATH)
+VIDEO_PATH = r"C:\Users\LOKESH\Desktop\VisionEdge\backend\data\sample.mp4"
 
-frame = provider.get_frame()
+provider = FrameProvider(VIDEO_PATH)
 
-print(type(frame))
-print(frame.shape)
+try:
+    print("Testing FrameProvider...\n")
+
+    for i, frame in enumerate(provider.frames()):
+        print(f"Frame {i + 1}")
+        print("Frame Type :", type(frame))
+        print("Frame Shape:", frame.shape)
+        break
+
+finally:
+    provider.close()
+    print("FrameProvider closed successfully.")
