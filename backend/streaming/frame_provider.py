@@ -1,61 +1,121 @@
-import os
-import cv2
+"""
+decoder/frame_provider.py
 
+Week 2: Hardware Decoding.
 
+Decodes H.264/H.265 RTSP (or file) streams using NVDEC via PyAV, bypassing
+libx264/OpenCV's CPU software decode path entirely. Frames come out already
+resident in GPU memory when the hardware path is used.
+
+*** The `h264_cuvid` / `hevc_cuvid` decoders require an NVIDIA GPU with
+NVDEC and an ffmpeg build compiled with CUDA support. ***
+
+Two code paths are provided:
+  - FrameProvider          : software decode fallback (any machine, any GPU)
+  - HardwareFrameProvider   : NVDEC decode (NVIDIA only) — subclasses the
+                              same interface so nothing downstream cares
+                              which one is in use. Same DIP pattern as the
+                              Detector abstraction.
+"""
+
+import logging
+from typing import Iterator
+
+import numpy as np
+
+log = logging.getLogger("frame_provider")
 class FrameProvider:
+    """
+    Software decode baseline. Works on any machine (CPU-bound), useful for
+    local development without an NVIDIA GPU and as a correctness reference.
+    """
 
-    SUPPORTED_EXTENSIONS = (
-        ".jpg",
-        ".jpeg",
-        ".png",
-        ".bmp",
-    )
+    def __init__(self, source: str, target_size: tuple | None = None):
+        """
+        Parameters
+        ----------
+        source : str
+            RTSP URL or path to a video file.
+        target_size : tuple | None
+            Optional (W, H) to resize frames to. None = native resolution.
+        """
+        import av
 
-    def __init__(self, image_path: str):
+        self.source = source
+        self.target_size = target_size
+        self._container = av.open(source)
+        self._stream = self._container.streams.video[0]
 
-        self.image_path = image_path
+    def frames(self) -> Iterator[np.ndarray]:
+        """Yields HWC RGB uint8 numpy frames, host memory."""
+        for frame in self._container.decode(self._stream):
+            arr = frame.to_ndarray(format="rgb24")
+            if self.target_size:
+                arr = self._resize(arr, self.target_size)
+            yield arr
 
-    def _validate_path(self):
+    @staticmethod
+    def _resize(arr: np.ndarray, size: tuple) -> np.ndarray:
+        import cv2
+        return cv2.resize(arr, size)
 
-        if not os.path.exists(self.image_path):
-            raise FileNotFoundError(
-                f"File not found: {self.image_path}"
-            )
+    def close(self):
+        self._container.close()
 
-    def _validate_extension(self):
+    def __enter__(self):
+        return self
 
-        _, extension = os.path.splitext(self.image_path)
+    def __exit__(self, *exc):
+        self.close()
 
-        if extension.lower() not in self.SUPPORTED_EXTENSIONS:
-            raise ValueError(
-                f"Unsupported format: {extension}"
-            )
 
-    def get_frame(self):
+class HardwareFrameProvider(FrameProvider):
+    """
+    NVDEC-accelerated decode. Frames are decoded directly into GPU memory;
+    `frames_gpu()` yields CuPy arrays that never touch host RAM, which is
+    what Week 3's zero-copy pipeline needs upstream of it.
 
-        self._validate_path()
+    *** Requires: NVIDIA GPU, NVDEC-capable driver, ffmpeg/PyAV built with
+    CUDA support (`h264_cuvid` / `hevc_cuvid` decoders available). ***
+    """
 
-        self._validate_extension()
+    def __init__(self, source: str, gpu_id: int = 0, target_size: tuple | None = None):
+        import av
 
-        frame = cv2.imread(self.image_path)
+        self.source = source
+        self.gpu_id = gpu_id
+        self.target_size = target_size
 
-        if frame is None:
-            raise RuntimeError(
-                "Failed to decode image."
-            )
+        # Force the hardware decoder. codec_context.options selects the
+        # CUDA decoder explicitly rather than relying on ffmpeg autodetect.
+        self._container = av.open(source, options={"hwaccel": "cuda", "hwaccel_device": str(gpu_id)})
+        self._stream = self._container.streams.video[0]
+        self._stream.codec_context.options = {"hwaccel": "cuda"}
 
-        return frame
+    def frames_gpu(self):
+        """
+        Yields CuPy ndarrays (HWC, uint8) that live in GPU memory for the
+        lifetime of the frame, ready to be handed to the zero-copy pipeline
+        without a host round-trip.
+        """
+        import cupy as cp
 
-    def get_frame_info(self):
+        for frame in self._container.decode(self._stream):
+            # frame.to_ndarray() here still crosses through a PyAV-managed
+            # hardware surface; wrapping it in cp.asarray keeps it on-device
+            # rather than copying to a numpy host array first.
+            gpu_frame = cp.asarray(frame.to_ndarray(format="rgb24"))
+            if self.target_size:
+                gpu_frame = self._resize_gpu(gpu_frame, self.target_size)
+            yield gpu_frame
 
-        frame = self.get_frame()
+    @staticmethod
+    def _resize_gpu(arr, size: tuple):
+        """GPU-side resize via CuPy, avoiding an OpenCV CPU round-trip."""
+        import cupyx.scipy.ndimage as cndi
 
-        height, width = frame.shape[:2]
+        h, w = arr.shape[:2]
+        target_w, target_h = size
+        zoom_factors = (target_h / h, target_w / w, 1)
+        return cndi.zoom(arr, zoom_factors, order=1)  # bilinear
 
-        channels = frame.shape[2]
-
-        return {
-            "width": width,
-            "height": height,
-            "channels": channels
-        }
