@@ -1,25 +1,11 @@
-import time 
- 
- 
-class Timer: 
- 
-    def __init__(self): 
-        self.start_time = None 
- 
-    def start(self): 
-        self.start_time = time.perf_counter() 
- 
-    def stop(self): 
- 
-        if self.start_time is None: 
-            raise RuntimeError( 
-                "Timer has not been started." 
-            ) 
- 
-        end_time = time.perf_counter() 
- 
-        elapsed = end_time - self.start_time 
- 
-        self.start_time = None 
- 
-        return elapsed
+# core/timer.py
+import time
+from contextlib import contextmanager
+
+@contextmanager
+def timed(label: str, logger=None):
+    start = time.perf_counter()
+    yield
+    elapsed = (time.perf_counter() - start) * 1000
+    msg = f"{label}: {elapsed:.2f}ms"
+    logger.info(msg) if logger else print(msg)
