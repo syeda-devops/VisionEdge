@@ -1,7 +1,7 @@
 {
   "name": "visionedge-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -9,11 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "latest",
-    "react-dom": "latest"
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "recharts": "^2.12.7"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "latest",
-    "vite": "latest"
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.8"
   }
 }
