@@ -50,3 +50,6 @@ frontend/node_modules/
  # Environment  
 
 .env 
+
+#Frontend 
+frontend/dist/
