@@ -1,5 +1,5 @@
 import argparse
-import logging
+from backend.core.logger import get_logger
 import statistics
 import time
 
@@ -7,8 +7,7 @@ import numpy as np
 
 from core.config import MODEL, STREAM
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
-log = logging.getLogger("benchmark.compare")
+log = get_logger(__name__)
 
 
 def _load_sample_frames(video_path: str, num_frames: int) -> list[np.ndarray]:
