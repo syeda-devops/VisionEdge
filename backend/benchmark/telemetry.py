@@ -1,10 +1,9 @@
-import logging
+from backend.core.logger import get_logger
 import time
 from collections import deque
 from dataclasses import dataclass, field
 
-log = logging.getLogger("telemetry")
-
+log = get_logger(__name__)
 
 @dataclass
 class StreamTelemetry:
