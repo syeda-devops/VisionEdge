@@ -29,10 +29,10 @@ import sys
 
 from aiohttp import web
 
-from core.config import WEBRTC, STREAM, MODEL
-from orchestration.stream_manager import manager as stream_manager
-from benchmark.telemetry import hub as telemetry_hub
-from streaming.webrtc_server import build_app, FileVideoTrack, PipelineVideoTrack, CPUPipelineVideoTrack
+from backend.core.config import WEBRTC, STREAM, MODEL
+#from backend.orchestration.stream_manager import manager as stream_manager
+from backend.benchmark.telemetry import hub as telemetry_hub
+#from backend.streaming.webrtc_server import build_app, FileVideoTrack, PipelineVideoTrack, CPUPipelineVideoTrack
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 log = logging.getLogger("main")
@@ -177,8 +177,8 @@ def build_cpu_app(source) -> web.Application:
         usually the default/built-in camera). Passed straight to
         cv2.VideoCapture.
     """
-    from pipeline.pytorch_pipeline import PyTorchPipeline
-    from streaming.webrtc_server import CPUPipelineVideoTrack
+    from backend.pipeline.pytorch_pipeline import PyTorchPipeline
+    from backend.streaming.webrtc_server import CPUPipelineVideoTrack
     from aiortc.contrib.media import MediaRelay
 
     app = build_full_app(cpu_track_factory)
