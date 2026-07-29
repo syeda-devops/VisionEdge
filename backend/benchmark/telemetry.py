@@ -35,6 +35,7 @@ class TelemetryHub:
 
     def register_stream(self, stream_id: str):
         self._streams[stream_id] = StreamTelemetry(stream_id=stream_id)
+        log.info("Registered stream: %s", stream_id)
 
     def unregister_stream(self, stream_id: str):
         self._streams.pop(stream_id, None)
