@@ -25,7 +25,8 @@ def main():
 
     def on_frame(frame, detections, frame_index):
 
-        cv2.imshow("VisionEdge Detection", frame)
+        display = cv2.resize(frame, (1280, 720)) 
+        cv2.imshow("VisionEdge Detection", display)
 
         if frame_index % 30 == 0:
             object_count = sum(
