@@ -5,7 +5,7 @@ import time
 
 import numpy as np
 
-from core.config import MODEL, STREAM
+from backend.core.config import MODEL, STREAM
 
 log = get_logger(__name__)
 
@@ -31,7 +31,7 @@ def _load_sample_frames(video_path: str, num_frames: int) -> list[np.ndarray]:
 
 
 def benchmark_pytorch(weights_path: str, frames: list[np.ndarray]) -> dict:
-    from detector.pytorch_baseline import PyTorchDetector
+    from backend.detector.pytorch_baseline import PyTorchDetector
 
     detector = PyTorchDetector(weights_path)
     latencies = []
@@ -49,7 +49,7 @@ def benchmark_pytorch(weights_path: str, frames: list[np.ndarray]) -> dict:
 
 def benchmark_tensorrt(engine_path: str, input_size: tuple, frames: list[np.ndarray]) -> dict:
     import cupy as cp
-    from detector.detector import Detector
+    from backend.detector.detector import Detector
 
     detector = Detector(engine_path, input_size=input_size)
     latencies = []

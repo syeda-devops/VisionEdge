@@ -1,0 +1,116 @@
+:root {
+  /* Color: dark network-ops console, cyan telemetry accent, amber for alerts */
+  --bg-void: #0a0d11;
+  --bg-panel: #12161d;
+  --bg-panel-raised: #171c24;
+  --line: #232a35;
+  --line-bright: #34404f;
+  --text-primary: #e6ecf3;
+  --text-dim: #7c8797;
+  --accent-cyan: #4fd1e8;
+  --accent-cyan-dim: #2a5a63;
+  --accent-amber: #ffb454;
+  --accent-green: #5fe3a1;
+  --accent-red: #ff6b6b;
+
+  --font-display: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--bg-void);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  background-attachment: fixed;
+  background-position: center;
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent-cyan-dim);
+}
+
+button {
+  font-family: var(--font-display);
+  cursor: pointer;
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* Signature element: HUD detection-bracket corners.
+   The same bracket motif used on real bounding-box overlays doubles here
+   as the app's structural language — panel corners, not decoration. */
+.hud-frame {
+  position: relative;
+}
+.hud-frame::before,
+.hud-frame::after,
+.hud-frame .corner-tl,
+.hud-frame .corner-br {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--accent-cyan);
+  opacity: 0.85;
+}
+.hud-frame::before {
+  top: -1px;
+  left: -1px;
+  border-right: none;
+  border-bottom: none;
+}
+.hud-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-left: none;
+  border-top: none;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  box-shadow: 0 0 6px var(--accent-red);
+  animation: pulse 1.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--line-bright);
+  border-radius: 3px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
