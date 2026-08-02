@@ -25,7 +25,7 @@ from aiortc import RTCPeerConnection, RTCSessionDescription, VideoStreamTrack
 from aiortc.contrib.media import MediaPlayer
 from av import VideoFrame
 
-from core.config import WEBRTC, STREAM
+from backend.core.config import WEBRTC, STREAM
 
 log = logging.getLogger("webrtc_server")
 
