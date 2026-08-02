@@ -1,4 +1,3 @@
-
 """
 streaming/webrtc_server.py
 
@@ -31,16 +30,18 @@ from core.config import WEBRTC, STREAM
 log = logging.getLogger("webrtc_server")
 
 pcs: set[RTCPeerConnection] = set()
+
+
 class FileVideoTrack(VideoStreamTrack):
- """
+    """
     Week 1 milestone: stream a plain video file, unedited, to prove the
     WebRTC plumbing (offer/answer, ICE, encoding) works end to end before
     any GPU code exists.
     """
 
-def __init__(self, video_path: str):
-    super().__init__()
-    self._player = MediaPlayer(video_path, loop=True)
+    def __init__(self, video_path: str):
+        super().__init__()
+        self._player = MediaPlayer(video_path, loop=True)
 
     async def recv(self):
         frame = await self._player.video.recv()
@@ -172,7 +173,7 @@ def run_week1_demo():
     """
     logging.basicConfig(level=logging.INFO)
 
-    def factory(stream_id: str):
+    def factory(stream_id: str, app: web.Application):
         return FileVideoTrack(STREAM.mock_video_path)
 
     app = build_app(factory)

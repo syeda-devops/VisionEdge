@@ -32,7 +32,7 @@ from aiohttp import web
 from backend.core.config import WEBRTC, STREAM, MODEL
 #from backend.orchestration.stream_manager import manager as stream_manager
 from backend.benchmark.telemetry import hub as telemetry_hub
-#from backend.streaming.webrtc_server import build_app, FileVideoTrack, PipelineVideoTrack, CPUPipelineVideoTrack
+from backend.streaming.webrtc_server import build_app, FileVideoTrack, PipelineVideoTrack, CPUPipelineVideoTrack
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(name)s: %(message)s")
 log = logging.getLogger("main")

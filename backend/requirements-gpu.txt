@@ -1,0 +1,25 @@
+# VisionEdge backend dependencies — NVIDIA-only additions
+#
+# Install this IN ADDITION to requirements.txt, and ONLY on a machine that
+# actually has an NVIDIA GPU + matching CUDA toolkit already set up.
+#
+#     pip install -r requirements.txt
+#     pip install -r requirements-gpu.txt
+#
+# Do NOT run this on a plain laptop/CI box with no NVIDIA GPU — pip will
+# either fail outright or hang for a long time trying to resolve wheels
+# that don't exist for your platform. If you just want --mode cpu, you
+# don't need this file at all.
+#
+# tensorrt is pinned to <11 deliberately: TensorRT 11 removed the classic
+# flag-based precision API (BuilderFlag.FP16/INT8) in favor of "strongly
+# typed" networks, which this codebase's detector/build_engine.py does not
+# use. Installing tensorrt unpinned will grab 11.x and break the build.
+#
+# cupy-cuda12x assumes CUDA 12.x — check `nvcc --version` first and swap
+# to cupy-cuda11x etc. if your CUDA toolkit is a different major version.
+
+tensorrt<11
+pycuda==2024.1.2
+cupy-cuda12x==13.3.0
+pynvml==11.5.3

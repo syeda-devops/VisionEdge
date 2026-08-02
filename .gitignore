@@ -53,3 +53,11 @@ frontend/node_modules/
 
 #Frontend 
 frontend/dist/
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
