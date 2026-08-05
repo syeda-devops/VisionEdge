@@ -35,7 +35,7 @@ import time
 import cv2
 import numpy as np
 
-from core.config import MODEL
+from backend.core.config import MODEL
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("test_zero_copy_gpu")
