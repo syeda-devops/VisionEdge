@@ -38,16 +38,11 @@ class TelemetryHub:
         log.info("Registered stream: %s", stream_id)
 
     def unregister_stream(self, stream_id: str):
-        if self._streams.pop(stream_id, None) is not None:
-            log.info("Unregistered stream: %s", stream_id)
-        else:
-            log.warning("Attempted to unregister unknown stream: %s", stream_id)
+        self._streams.pop(stream_id, None)
 
     def tick(self, stream_id: str):
         if stream_id in self._streams:
             self._streams[stream_id].tick()
-        else:
-            log.warning("Telemetry tick received for unknown stream: %s", stream_id)
 
     def gpu_stats(self) -> dict:
         """
