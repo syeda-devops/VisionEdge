@@ -80,11 +80,16 @@ def benchmark_tensorrt(engine_path: str, input_size: tuple, frames: list[np.ndar
 
 
 def _summarize(label: str, latencies: list[float]) -> dict:
+    if not latencies:
+        raise ValueError(f"No latency samples available for {label}")
+
     mean_latency = statistics.mean(latencies)
+    p95_latency = float(np.percentile(latencies, 95))
+
     return {
         "label": label,
         "mean_latency_ms": mean_latency * 1000,
-        "p95_latency_ms": sorted(latencies)[int(len(latencies) * 0.95)] * 1000,
+        "p95_latency_ms": p95_latency * 1000,
         "fps": 1.0 / mean_latency if mean_latency > 0 else float("inf"),
         "num_samples": len(latencies),
     }
