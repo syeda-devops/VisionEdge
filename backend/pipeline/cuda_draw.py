@@ -7,7 +7,7 @@ so annotation happens in VRAM without round-tripping to OpenCV/CPU
 
 *** Requires an NVIDIA GPU (CuPy + a working CUDA toolkit for kernel JIT). ***
 """
-
+# CUDA kernel executes fully on GPU memory to avoid CPU round-trips.
 from detector.detector import Detection
 
 # Draws axis-aligned box outlines directly into an HWC uint8 RGB image
@@ -132,7 +132,9 @@ def draw_boxes_gpu(
     ], dtype=cp.uint8)
 
     frame_gpu = cp.ascontiguousarray(frame_gpu)
-
+    # CUDA grid configuration:
+# Each thread processes a single pixel,
+# allowing box rendering directly in GPU memory.
     threads_per_block = (16, 16)
 
     blocks = (
