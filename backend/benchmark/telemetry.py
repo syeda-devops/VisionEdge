@@ -5,6 +5,7 @@ from dataclasses import dataclass, field
 
 log = get_logger(__name__)
 
+# Tracks FPS measurements for a single video stream.
 @dataclass
 class StreamTelemetry:
     stream_id: str
@@ -22,6 +23,7 @@ class StreamTelemetry:
         return sum(self.fps_window) / len(self.fps_window) if self.fps_window else 0.0
 
 
+# Central hub for collecting stream and GPU performance telemetry.
 class TelemetryHub:
     """
     Central collector the orchestrator and every ZeroCopyPipeline instance
@@ -30,7 +32,10 @@ class TelemetryHub:
     """
 
     def __init__(self):
+        # Store telemetry state separately for each active stream.
         self._streams: dict[str, StreamTelemetry] = {}
+
+        # Store the initial VRAM reading used as the leak-detection baseline.
         self._leak_baseline_mb: float | None = None
 
     def register_stream(self, stream_id: str):
@@ -44,6 +49,7 @@ class TelemetryHub:
         if stream_id in self._streams:
             self._streams[stream_id].tick()
 
+    # Collect GPU memory and utilization information through NVML.
     def gpu_stats(self) -> dict:
         """
         Polls NVML for VRAM usage and decoder/compute utilization.
@@ -78,7 +84,7 @@ class TelemetryHub:
                 "vram_used_mb": 0, "vram_total_mb": 0, "vram_percent": 0,
                 "gpu_util_percent": 0, "decoder_util_percent": None,
             }
-
+# Compare current VRAM usage against the baseline to detect growth.
     def check_for_leak(self, warn_growth_mb: float = 500.0) -> bool:
         """
         Simple leak heuristic: compare current VRAM usage against the first
@@ -98,6 +104,7 @@ class TelemetryHub:
             return True
         return False
 
+# Return the current telemetry state for dashboard consumers.
     def snapshot(self) -> dict:
         """Full state for the dashboard: per-stream FPS + current GPU stats."""
         return {
