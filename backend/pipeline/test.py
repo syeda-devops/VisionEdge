@@ -1,6 +1,6 @@
 from backend.pipeline.pytorch_pipeline import PyTorchPipeline
 
-VIDEO_PATH = r"C:\Users\LOKESH\Desktop\VisionEdge\sample_media\sample.mp4"
+VIDEO_PATH = r"C:\Users\LOKESH\Desktop\VisionEdge\sample_media\traffic_4k.mp4"
 
 try:
     pipeline = PyTorchPipeline(VIDEO_PATH)
