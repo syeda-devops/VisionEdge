@@ -1,0 +1,10 @@
+[33mbaf91ab[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature/model-compilation[m[33m, [m[1;31morigin/feature/model-compilation[m[33m)[m feat: CUDA kernel for GPU-side bounding box drawing
+[33me0f748d[m[33m ([m[1;31morigin/develop[m[33m, [m[1;32mdevelop[m[33m)[m Merge pull request #40 from syeda-devops/feature/frame-provider
+[33mcd47165[m feat: add WebRTC foundation
+[33m50cce76[m chore: remove tracked Python cache files
+[33m7cde000[m Resolve local merge conflict
+[33m3a395f3[m refactor: move frame_provider to decoder
+[33m5934f7a[m test: verify output of week 2
+[33mdbb79d4[m refact: improve application entry point
+[33m928f273[m refact: improve application entry point
+[33m1d2c01d[m Merge pull request #38 from syeda-devops/feature/model-compilation

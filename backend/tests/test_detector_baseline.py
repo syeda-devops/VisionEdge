@@ -2,7 +2,8 @@ import numpy as np
 
 from detector.pytorch_baseline import PyTorchDetector
 from detector.detector import Detector
-
+# This test validates that the TensorRT detector interface
+# remains compatible with the PyTorch baseline implementation.
 
 def test_detector_matches_pytorch_baseline():
     """
