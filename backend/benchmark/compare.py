@@ -17,6 +17,7 @@ def _load_sample_frames(video_path: str, num_frames: int) -> list[np.ndarray]:
     frames = []
     container = av.open(video_path)
     stream = container.streams.video[0]
+    # Select evenly spaced frames so each benchmark uses a repeatable sample.
     total = stream.frames or num_frames * 10
     step = max(1, total // num_frames)
 
@@ -36,7 +37,7 @@ def benchmark_pytorch(weights_path: str, frames: list[np.ndarray]) -> dict:
     detector = PyTorchDetector(weights_path)
     latencies = []
 
-    # warmup
+    # Warm up the model before timing to exclude initialization overhead.
     for f in frames[:5]:
         detector.predict(f)
 
@@ -54,6 +55,7 @@ def benchmark_tensorrt(engine_path: str, input_size: tuple, frames: list[np.ndar
     detector = Detector(engine_path, input_size=input_size)
     latencies = []
 
+    # Move frames to GPU and prepare them in the layout expected by TensorRT.
     def preprocess(frame_np):
         gpu = cp.asarray(frame_np)
         import cupyx.scipy.ndimage as cndi
@@ -79,6 +81,7 @@ def benchmark_tensorrt(engine_path: str, input_size: tuple, frames: list[np.ndar
     return _summarize("TensorRT", latencies)
 
 
+# Calculate summary metrics from the collected inference latency samples.
 def _summarize(label: str, latencies: list[float]) -> dict:
     mean_latency = statistics.mean(latencies)
     return {
