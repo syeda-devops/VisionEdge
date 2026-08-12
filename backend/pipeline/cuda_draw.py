@@ -1,6 +1,8 @@
 """
 pipeline/cuda_draw.py
-
+# GPU-side annotation module.
+# Uses a custom CUDA kernel to draw bounding boxes directly in VRAM,
+# avoiding CPU memory transfers and improving pipeline efficiency.
 Week 3: draw bounding boxes using a raw CUDA kernel via CuPy's RawKernel,
 so annotation happens in VRAM without round-tripping to OpenCV/CPU
 (cv2.rectangle would require pulling the frame back to host memory first).
