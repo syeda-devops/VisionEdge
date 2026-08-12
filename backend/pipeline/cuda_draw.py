@@ -6,7 +6,9 @@ pipeline/cuda_draw.py
 Week 3: draw bounding boxes using a raw CUDA kernel via CuPy's RawKernel,
 so annotation happens in VRAM without round-tripping to OpenCV/CPU
 (cv2.rectangle would require pulling the frame back to host memory first).
-
+# NOTE:
+# This module keeps bounding-box rendering entirely on the GPU.
+# Avoiding CPU round-trips reduces latency and supports real-time inference.
 *** Requires an NVIDIA GPU (CuPy + a working CUDA toolkit for kernel JIT). ***
 """
 # CUDA kernel executes fully on GPU memory to avoid CPU round-trips.
@@ -15,7 +17,9 @@ from detector.detector import Detection
 # Draws axis-aligned box outlines directly into an HWC uint8 RGB image
 # sitting in device memory. One CUDA thread per pixel; each thread checks
 # whether it lies on any box's border and, if so, writes the box color.
-#
+# Review note:
+# GPU rendering is kept separate from inference logic
+# to make the pipeline easier to benchmark and maintain.
 # This is intentionally simple (outline only, fixed line thickness) —
 # the point of the exercise is demonstrating a hand-written CUDA kernel
 # in the pipeline, not building a full rendering library.
