@@ -47,7 +47,12 @@ class FrameProvider:
         self._stream = self._container.streams.video[0]
 
     def frames(self) -> Iterator[np.ndarray]:
-        """Yields HWC RGB uint8 numpy frames, host memory."""
+        """
+    Yields HWC RGB uint8 NumPy frames in host memory.
+
+    Returns:
+        Iterator[np.ndarray]: Frames in HWC format with RGB channels.
+    """
         for frame in self._container.decode(self._stream):
             arr = frame.to_ndarray(format="rgb24")
             if self.target_size:
