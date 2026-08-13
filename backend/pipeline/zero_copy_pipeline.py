@@ -2,10 +2,10 @@ import logging
 import time
 from dataclasses import dataclass
 
-from core.config import MODEL, STREAM
-from decoder.frame_provider import HardwareFrameProvider
-from detector.detector import Detector
-from pipeline.cuda_draw import draw_boxes_gpu
+from backend.core.config import MODEL, STREAM
+from backend.decoder.frame_provider import HardwareFrameProvider
+from backend.detector.detector import Detector
+from backend.pipeline.cuda_draw import draw_boxes_gpu
 
 log = logging.getLogger("zero_copy_pipeline")
 

@@ -8,7 +8,7 @@ so annotation happens in VRAM without round-tripping to OpenCV/CPU
 *** Requires an NVIDIA GPU (CuPy + a working CUDA toolkit for kernel JIT). ***
 """
 
-from detector.detector import Detection
+from backend.detector.detector import Detection
 
 # Draws axis-aligned box outlines directly into an HWC uint8 RGB image
 # sitting in device memory. One CUDA thread per pixel; each thread checks

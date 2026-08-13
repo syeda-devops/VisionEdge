@@ -16,9 +16,9 @@ import asyncio
 import logging
 from dataclasses import dataclass, field
 
-from core.config import ORCHESTRATOR, MODEL
-from benchmark.telemetry import hub as telemetry_hub
-from pipeline.zero_copy_pipeline import ZeroCopyPipeline
+from backend.core.config import ORCHESTRATOR, MODEL
+from backend.benchmark.telemetry import hub as telemetry_hub
+from backend.pipeline.zero_copy_pipeline import ZeroCopyPipeline
 
 log = logging.getLogger("stream_manager")
 
