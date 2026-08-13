@@ -95,8 +95,8 @@ class ZeroCopyPipeline:
             t3 = time.perf_counter()
 
             self.stats.frames_processed += 1
-            self.stats.total_decode_s += (t1 - t0)   # includes preprocess; decode itself
-                                                        # is measured separately by FrameProvider
+            self.stats.total_decode_s += (t1 - t0)   # includes GPU preprocessing;
+                                            # decode time is measured separately by FrameProvider
             self.stats.total_inference_s += (t2 - t1)
             self.stats.total_draw_s += (t3 - t2)
 
