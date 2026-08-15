@@ -1,0 +1,17 @@
+.app {
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.status {
+  color: #475569;
+  min-height: 1.5rem;
+}
+
+video {
+  background: #111827;
+  border-radius: 8px;
+  max-width: 100%;
+}
